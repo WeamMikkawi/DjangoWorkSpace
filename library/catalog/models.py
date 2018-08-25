@@ -39,7 +39,7 @@ class Book(models.Model):
     """
     title = models.CharField(max_length=200)
     # each book has one auhor, but author can write multiple of books
-    author = models.ForeignKey('Author', on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
     summery = models.CharField(max_length=500, blank=True, null=True)
     imprint = models.CharField(max_length=100, blank=True, null=True)
     isbn = models.CharField('ISBN', max_length=13)
@@ -51,6 +51,9 @@ class Book(models.Model):
 
     def get_absulote_url(self):
         return reverse('book-detail', args=[str(self.id)])
+
+    def display_genre(self):
+        return [gen.name for gen in self.genre.all()]
 
 class BookInstance(models.Model):
     """
